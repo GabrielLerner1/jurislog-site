@@ -2,10 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JurisLog — Logística Jurídica Inteligente</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>JurisLog App — Logística Jurídica Inteligente</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,6 +13,7 @@
     --verde: #0F4C2A;
     --verde-mid: #1A6B3C;
     --verde-light: #D6F5E3;
+    --verde-soft: #E8F5EC;
     --ouro: #C9A84C;
     --ouro-light: #F5EDD6;
     --off: #F7F5F0;
@@ -20,589 +21,812 @@
     --muted: #6B6B65;
     --border: #E2DDD4;
     --white: #FFFFFF;
+    --danger: #D9534F;
+    --warning: #F0AD4E;
+    --success: #5CB85C;
   }
-
-  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--off);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.5;
     overflow-x: hidden;
   }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 2rem;
-    background: rgba(247,245,240,0.92);
+  /* APP LAYOUT */
+  .app-container {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--off);
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    position: relative;
+  }
+
+  /* NAVBAR APP */
+  .app-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(247,245,240,0.96);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
   }
-  .nav-logo { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: var(--verde); letter-spacing: -0.5px; }
-  .nav-logo span { color: var(--ouro); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color .2s; }
-  .nav-links a:hover { color: var(--verde); }
-  .nav-cta {
-    background: var(--verde); color: #fff; border: none;
-    padding: 8px 20px; border-radius: 100px; font-size: 14px; font-weight: 500;
-    cursor: pointer; text-decoration: none; transition: background .2s;
-  }
-  .nav-cta:hover { background: var(--verde-mid); }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
-    padding: 7rem 1.5rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(15,76,42,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.06) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--verde-light); color: var(--verde);
-    font-size: 12px; font-weight: 500; padding: 5px 14px; border-radius: 100px;
-    margin-bottom: 1.5rem;
-    animation: fadeUp .6s ease both;
-  }
-  .hero-badge::before { content: '●'; font-size: 8px; }
-  .hero h1 {
+  .logo {
     font-family: 'Fraunces', serif;
-    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-size: 1.4rem;
     font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -1.5px;
     color: var(--verde);
-    max-width: 800px;
-    margin-bottom: 1.25rem;
-    animation: fadeUp .6s .1s ease both;
   }
-  .hero h1 em { font-style: italic; color: var(--ouro); }
-  .hero p {
-    font-size: clamp(1rem, 2vw, 1.15rem);
+  .logo span { color: var(--ouro); }
+  .user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--verde);
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--verde);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .logout-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 60px;
+    z-index: 99;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 500;
     color: var(--muted);
-    max-width: 520px;
-    margin-bottom: 2.5rem;
-    animation: fadeUp .6s .2s ease both;
+    cursor: pointer;
+    transition: all 0.2s;
   }
-  .hero-actions {
-    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-    animation: fadeUp .6s .3s ease both;
+  .tab.active {
+    color: var(--verde);
+    border-bottom: 2px solid var(--verde);
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 1rem;
+    padding-bottom: 5rem;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .screen.active {
+    display: block;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  .order-id {
+    font-weight: 600;
+    color: var(--verde);
+  }
+  .order-status {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--off);
+  }
+  .status-pending { background: #FFF3E0; color: var(--warning); }
+  .status-collecting { background: #E3F2FD; color: #2196F3; }
+  .status-transit { background: #E8EAF6; color: #3F51B5; }
+  .status-delivered { background: var(--verde-light); color: var(--verde); }
+  .status-cancelled { background: #FFEBEE; color: var(--danger); }
+
+  .order-details {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .tracking-info {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+  }
+
+  /* FORM */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    color: var(--muted);
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    background: var(--white);
   }
   .btn-primary {
-    background: var(--verde); color: #fff;
-    padding: 14px 32px; border-radius: 100px;
-    font-size: 15px; font-weight: 500; text-decoration: none;
-    transition: transform .2s, background .2s;
-    border: none; cursor: pointer;
+    background: var(--verde);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 40px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1rem;
   }
-  .btn-primary:hover { background: var(--verde-mid); transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent; color: var(--verde);
-    padding: 14px 32px; border-radius: 100px;
-    font-size: 15px; font-weight: 500; text-decoration: none;
-    border: 1.5px solid var(--verde);
-    transition: background .2s;
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--verde);
+    color: var(--verde);
+    padding: 0.7rem;
+    border-radius: 40px;
+    width: 100%;
+    cursor: pointer;
   }
-  .btn-secondary:hover { background: var(--verde-light); }
 
-  .hero-stats {
-    display: flex; gap: 2.5rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center;
-    animation: fadeUp .6s .4s ease both;
+  /* PRICE */
+  .price {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--verde);
   }
-  .stat { text-align: center; }
-  .stat-val { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: var(--verde); }
-  .stat-lbl { font-size: 12px; color: var(--muted); }
 
-  /* SECTION BASE */
-  section { padding: 5rem 1.5rem; }
-  .container { max-width: 1100px; margin: 0 auto; }
-  .section-label { font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--ouro); margin-bottom: .75rem; }
-  .section-title { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; color: var(--verde); line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.5px; }
-  .section-sub { font-size: 1rem; color: var(--muted); max-width: 520px; }
-
-  /* COMO FUNCIONA */
-  .how { background: var(--white); }
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-  .step {
+  /* AUTH SCREENS */
+  .auth-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
     background: var(--off);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+  }
+  .auth-card {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  }
+
+  /* BOTTOM SHEET */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+  }
+  .bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 24px 24px 0 0;
     padding: 1.5rem;
-    position: relative;
-    transition: transform .2s, box-shadow .2s;
+    max-width: 480px;
+    margin: 0 auto;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 201;
   }
-  .step:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(15,76,42,0.08); }
-  .step-num {
-    font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 700;
-    color: var(--verde-light); line-height: 1; margin-bottom: .75rem;
+  .bottom-sheet.open {
+    transform: translateY(0);
   }
-  .step h3 { font-size: 15px; font-weight: 500; color: var(--verde); margin-bottom: .5rem; }
-  .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .sheet-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
 
-  /* SERVIÇOS */
-  .servicos { background: var(--verde); }
-  .servicos .section-label { color: var(--ouro); }
-  .servicos .section-title { color: #fff; }
-  .servicos .section-sub { color: rgba(255,255,255,0.6); }
-  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
-  .scard {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 16px; padding: 1.5rem;
-    transition: background .2s;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .scard:hover { background: rgba(255,255,255,0.12); }
-  .scard-icon { font-size: 1.5rem; margin-bottom: 1rem; }
-  .scard h3 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: .5rem; }
-  .scard p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
 
-  /* PREÇOS */
-  .precos { background: var(--off); }
-  .price-table {
-    width: 100%; border-collapse: collapse; margin-top: 2rem;
-    background: var(--white); border-radius: 16px; overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .price-table thead { background: var(--verde); color: #fff; }
-  .price-table th { padding: 14px 20px; font-size: 13px; font-weight: 500; text-align: left; }
-  .price-table td { padding: 14px 20px; font-size: 13px; color: var(--text); border-top: 1px solid var(--border); }
-  .price-table tr:hover td { background: var(--off); }
-  .price-tag { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; color: var(--verde); }
-
-  /* PLANOS */
-  .planos { background: var(--white); }
-  .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
-  .plan {
-    border: 1.5px solid var(--border); border-radius: 20px; padding: 2rem;
-    transition: transform .2s;
-  }
-  .plan:hover { transform: translateY(-4px); }
-  .plan.featured { border-color: var(--verde); background: var(--verde); color: #fff; }
-  .plan-label { font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
-  .plan.featured .plan-label { color: rgba(255,255,255,0.6); }
-  .plan-price { font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 700; color: var(--verde); line-height: 1; margin-bottom: .25rem; }
-  .plan.featured .plan-price { color: #fff; }
-  .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
-  .plan.featured .plan-period { color: rgba(255,255,255,0.6); }
-  .plan-features { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.5rem; }
-  .plan-features li { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-  .plan.featured .plan-features li { color: rgba(255,255,255,0.8); }
-  .plan-features li::before { content: '✓'; font-weight: 700; color: var(--verde); font-size: 12px; }
-  .plan.featured .plan-features li::before { color: var(--ouro); }
-  .plan-btn {
-    display: block; text-align: center; padding: 12px;
-    border-radius: 100px; font-size: 14px; font-weight: 500;
-    text-decoration: none; transition: all .2s; cursor: pointer; border: none;
-  }
-  .plan-btn-outline { border: 1.5px solid var(--verde); color: var(--verde); background: transparent; }
-  .plan-btn-outline:hover { background: var(--verde-light); }
-  .plan-btn-filled { background: var(--ouro); color: var(--verde); }
-  .plan-btn-filled:hover { background: #b8963e; }
-
-  /* CONTATO */
-  .contato { background: var(--off); }
-  .form-card {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 20px; padding: 2.5rem; max-width: 560px;
-  }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .form-group { margin-bottom: 1rem; }
-  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%; padding: 10px 14px;
-    border: 1px solid var(--border); border-radius: 10px;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text);
-    background: var(--off);
-    transition: border-color .2s, box-shadow .2s;
-    outline: none;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--verde);
-    box-shadow: 0 0 0 3px rgba(15,76,42,0.08);
-  }
-  .form-group textarea { resize: vertical; min-height: 100px; }
-  .form-submit {
-    width: 100%; padding: 13px;
-    background: var(--verde); color: #fff;
-    border: none; border-radius: 100px;
-    font-size: 15px; font-weight: 500; cursor: pointer;
-    transition: background .2s, transform .2s;
-  }
-  .form-submit:hover { background: var(--verde-mid); transform: translateY(-1px); }
-  .form-success {
-    display: none; text-align: center; padding: 2rem;
-    background: var(--verde-light); border-radius: 12px; margin-top: 1rem;
-  }
-  .form-success p { color: var(--verde); font-weight: 500; }
-
-  /* FOOTER */
-  footer {
-    background: var(--verde); color: rgba(255,255,255,0.7);
-    padding: 3rem 1.5rem; text-align: center;
-  }
-  footer .logo { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: .5rem; }
-  footer .logo span { color: var(--ouro); }
-  footer p { font-size: 13px; margin-bottom: 1.5rem; }
-  footer .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
-  footer a { font-size: 13px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color .2s; }
-  footer a:hover { color: #fff; }
-
-  /* MOBILE NAV */
-  .menu-btn { display: none; background: none; border: none; cursor: pointer; font-size: 1.3rem; color: var(--verde); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal.visible { opacity: 1; transform: none; }
-
-  /* RESPONSIVE */
-  @media (max-width: 680px) {
-    .nav-links { display: none; }
-    .menu-btn { display: block; }
-    .form-row { grid-template-columns: 1fr; }
-    .hero-stats { gap: 1.5rem; }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    z-index: 300;
+    display: none;
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Juris<span>Log</span></div>
-  <ul class="nav-links">
-    <li><a href="#como-funciona">Como funciona</a></li>
-    <li><a href="#servicos">Serviços</a></li>
-    <li><a href="#precos">Preços</a></li>
-    <li><a href="#planos">Planos</a></li>
-  </ul>
-  <a href="#contato" class="nav-cta">Fale conosco</a>
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">Plataforma jurídica completa</div>
-  <h1>Logística inteligente para <em>advogados</em> que não têm tempo a perder</h1>
-  <p>Entregas de documentos, gestão de prazos, diligências e marketplace jurídico — tudo numa plataforma só, com rastreamento em tempo real.</p>
-  <div class="hero-actions">
-    <a href="#contato" class="btn-primary">Quero testar grátis</a>
-    <a href="#como-funciona" class="btn-secondary">Ver como funciona</a>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-val">30min</div><div class="stat-lbl">Tempo médio de coleta</div></div>
-    <div class="stat"><div class="stat-val">98%</div><div class="stat-lbl">Entregas no prazo</div></div>
-    <div class="stat"><div class="stat-val">R$0</div><div class="stat-lbl">Para começar</div></div>
-  </div>
-</section>
-
-<!-- COMO FUNCIONA -->
-<section class="how" id="como-funciona">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">Simples assim</div>
-      <h2 class="section-title">Do pedido ao protocolo<br>em 4 passos</h2>
-      <p class="section-sub">Sem ligações, sem incerteza. Você acompanha tudo pelo app em tempo real.</p>
-    </div>
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-num">01</div>
-        <h3>Abra o pedido</h3>
-        <p>Informe o tipo de diligência, endereço e urgência. O preço aparece antes de confirmar.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">02</div>
-        <h3>Confirmamos e alocamos</h3>
-        <p>Nosso sistema designa o executor mais próximo e disponível automaticamente.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">03</div>
-        <h3>Rastreio em tempo real</h3>
-        <p>Você recebe atualizações por WhatsApp a cada etapa: coleta, trânsito e protocolo.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-num">04</div>
-        <h3>Comprovante automático</h3>
-        <p>Foto do protocolo, comprovante e nota fiscal chegam direto no seu e-mail.</p>
-      </div>
+<div class="app-container" id="app">
+  <!-- AUTH SCREEN -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="logo" style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">Juris<span>Log</span></div>
+      <h3 style="margin-bottom: 1.5rem; text-align: center;">Acesse sua conta</h3>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="loginEmail" placeholder="seu@email.com" required value="advogado@teste.com">
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="loginPassword" placeholder="••••••" required value="123456">
+        </div>
+        <button type="submit" class="btn-primary">Entrar</button>
+      </form>
+      <p style="text-align: center; margin-top: 1rem; font-size: 0.75rem; color: var(--muted);">Demo: advogado@teste.com / 123456</p>
     </div>
   </div>
-</section>
 
-<!-- SERVIÇOS -->
-<section class="servicos" id="servicos">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">O que oferecemos</div>
-      <h2 class="section-title">Tudo que um escritório precisa</h2>
-      <p class="section-sub">De uma entrega simples até correspondentes jurídicos em todo o Brasil.</p>
-    </div>
-    <div class="cards-grid">
-      <div class="scard reveal">
-        <div class="scard-icon">📄</div>
-        <h3>Entrega de documentos</h3>
-        <p>Motoboy dedicado para entregar petições, contratos e documentos com urgência.</p>
-      </div>
-      <div class="scard reveal">
-        <div class="scard-icon">🏛️</div>
-        <h3>Protocolos em cartório</h3>
-        <p>Protocolo presencial com foto de confirmação e carimbo digitalizado.</p>
-      </div>
-      <div class="scard reveal">
-        <div class="scard-icon">⏰</div>
-        <h3>Gestão de prazos</h3>
-        <p>Calendário judicial integrado com alertas automáticos por WhatsApp e e-mail.</p>
-      </div>
-      <div class="scard reveal">
-        <div class="scard-icon">⚖️</div>
-        <h3>Correspondentes jurídicos</h3>
-        <p>Rede de advogados correspondentes para audiências em todo o território nacional.</p>
-      </div>
-      <div class="scard reveal">
-        <div class="scard-icon">🔍</div>
-        <h3>Diligências externas</h3>
-        <p>Intimações, buscas em fóruns, autenticações e certidões sob demanda.</p>
-      </div>
-      <div class="scard reveal">
-        <div class="scard-icon">🛒</div>
-        <h3>Marketplace jurídico</h3>
-        <p>Contrate peritos, tradutores e oficiais de justiça com avaliações verificadas.</p>
+  <!-- MAIN APP -->
+  <div id="appScreen" style="display: none;">
+    <div class="app-nav">
+      <div class="logo">Juris<span>Log</span></div>
+      <div class="user-area">
+        <span class="user-name" id="userName">Dr. Silva</span>
+        <div class="avatar" id="avatarBtn">👤</div>
+        <button class="logout-btn" id="logoutBtn">🚪</button>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- PREÇOS -->
-<section class="precos" id="precos">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">Transparência total</div>
-      <h2 class="section-title">Tabela de preços</h2>
-      <p class="section-sub">Sem surpresas. O valor exato aparece antes de você confirmar qualquer pedido.</p>
+    <div class="tabs">
+      <button class="tab active" data-screen="home">🏠 Início</button>
+      <button class="tab" data-screen="orders">📦 Meus Pedidos</button>
+      <button class="tab" data-screen="new">➕ Novo Pedido</button>
+      <button class="tab" data-screen="profile">👤 Perfil</button>
     </div>
-    <div class="reveal">
-      <table class="price-table">
-        <thead>
-          <tr>
-            <th>Serviço</th>
-            <th>Prazo padrão</th>
-            <th>Valor médio</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Entrega simples (até 5 km)</td>
-            <td>2–4 horas</td>
-            <td><span class="price-tag">R$ 25–40</span></td>
-          </tr>
-          <tr>
-            <td>Protocolo em cartório</td>
-            <td>Mesmo dia</td>
-            <td><span class="price-tag">R$ 50–80</span></td>
-          </tr>
-          <tr>
-            <td>Diligência com urgência</td>
-            <td>1–2 horas</td>
-            <td><span class="price-tag">R$ 100–180</span></td>
-          </tr>
-          <tr>
-            <td>Correspondente jurídico (por audiência)</td>
-            <td>Conforme pauta</td>
-            <td><span class="price-tag">R$ 150–300</span></td>
-          </tr>
-          <tr>
-            <td>Busca e certidão em fórum</td>
-            <td>24–48 horas</td>
-            <td><span class="price-tag">R$ 60–120</span></td>
-          </tr>
-          <tr>
-            <td>Tradução juramentada (por página)</td>
-            <td>3–5 dias úteis</td>
-            <td><span class="price-tag">R$ 80–150</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
-<!-- PLANOS -->
-<section class="planos" id="planos">
-  <div class="container">
-    <div class="reveal" style="text-align:center; margin-bottom:0;">
-      <div class="section-label">Assinaturas</div>
-      <h2 class="section-title">Planos mensais com desconto</h2>
-      <p class="section-sub" style="margin:0 auto;">Para escritórios com volume recorrente, os planos oferecem pedidos com desconto e recursos extras.</p>
-    </div>
-    <div class="plans-grid">
-      <div class="plan reveal">
-        <div class="plan-label">Básico</div>
-        <div class="plan-price">R$149</div>
-        <div class="plan-period">/mês · até 2 advogados</div>
-        <ul class="plan-features">
-          <li>10 pedidos inclusos/mês</li>
-          <li>Rastreamento em tempo real</li>
-          <li>Alertas por WhatsApp</li>
-          <li>Comprovantes automáticos</li>
-        </ul>
-        <a href="#contato" class="plan-btn plan-btn-outline">Começar</a>
-      </div>
-      <div class="plan featured reveal">
-        <div class="plan-label">Profissional</div>
-        <div class="plan-price">R$299</div>
-        <div class="plan-period">/mês · até 5 advogados</div>
-        <ul class="plan-features">
-          <li>30 pedidos inclusos/mês</li>
-          <li>Gestão de prazos judiciais</li>
-          <li>Acesso ao marketplace</li>
-          <li>Relatórios mensais</li>
-          <li>Suporte prioritário</li>
-        </ul>
-        <a href="#contato" class="plan-btn plan-btn-filled">Mais popular</a>
-      </div>
-      <div class="plan reveal">
-        <div class="plan-label">Escritório</div>
-        <div class="plan-price">R$599</div>
-        <div class="plan-period">/mês · ilimitado</div>
-        <ul class="plan-features">
-          <li>Pedidos ilimitados</li>
-          <li>Correspondentes em todo BR</li>
-          <li>API de integração</li>
-          <li>NF automática por pedido</li>
-          <li>Gerente de conta dedicado</li>
-        </ul>
-        <a href="#contato" class="plan-btn plan-btn-outline">Falar com vendas</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTATO -->
-<section class="contato" id="contato">
-  <div class="container">
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items:start;" class="contact-layout">
-      <div class="reveal">
-        <div class="section-label">Entre em contato</div>
-        <h2 class="section-title">Pronto para começar?</h2>
-        <p class="section-sub">Preencha o formulário e nossa equipe entra em contato em até 24 horas com uma demonstração gratuita.</p>
-        <div style="margin-top:2rem; display:flex; flex-direction:column; gap:1rem;">
-          <div style="display:flex; gap:12px; align-items:center;">
-            <span style="font-size:1.2rem;">📱</span>
-            <span style="font-size:14px; color:var(--muted);">WhatsApp disponível em breve</span>
+    <div class="main-content">
+      <!-- HOME SCREEN -->
+      <div id="homeScreen" class="screen active">
+        <div class="card">
+          <h3>Bem-vindo, <span id="welcomeName">Dr.</span>!</h3>
+          <p style="font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem;">Seus pedidos ativos:</p>
+          <div id="activeOrdersList"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <strong>📊 Estatísticas</strong>
           </div>
-          <div style="display:flex; gap:12px; align-items:center;">
-            <span style="font-size:1.2rem;">📧</span>
-            <span style="font-size:14px; color:var(--muted);">contato@jurislog.com.br</span>
+          <div id="statsContainer"></div>
+        </div>
+        <div class="card" style="background: var(--verde-light);">
+          <strong>⚡ Ações rápidas</strong>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <button class="btn-outline" style="flex:1;" onclick="switchToScreen('new')">Novo Pedido</button>
+            <button class="btn-outline" style="flex:1;" onclick="switchToScreen('orders')">Meus Pedidos</button>
           </div>
         </div>
       </div>
-      <div class="reveal">
-        <div class="form-card">
-          <form id="contactForm" onsubmit="submitForm(event)">
-            <div class="form-row">
-              <div class="form-group">
-                <label>Nome</label>
-                <input type="text" placeholder="Dr. João Silva" required>
-              </div>
-              <div class="form-group">
-                <label>WhatsApp</label>
-                <input type="tel" placeholder="(11) 99999-9999" required>
-              </div>
-            </div>
+
+      <!-- ORDERS SCREEN -->
+      <div id="ordersScreen" class="screen">
+        <div id="ordersList"></div>
+        <div id="emptyOrders" style="text-align: center; padding: 2rem; color: var(--muted);">Nenhum pedido ainda. Crie seu primeiro pedido!</div>
+      </div>
+
+      <!-- NEW ORDER SCREEN -->
+      <div id="newScreen" class="screen">
+        <div class="card">
+          <h3>📝 Novo Pedido</h3>
+          <form id="newOrderForm">
             <div class="form-group">
-              <label>E-mail</label>
-              <input type="email" placeholder="joao@escritorio.adv.br" required>
-            </div>
-            <div class="form-group">
-              <label>Tipo de serviço de interesse</label>
-              <select>
+              <label>Tipo de serviço *</label>
+              <select id="orderType" required>
                 <option value="">Selecione...</option>
-                <option>Entrega de documentos</option>
-                <option>Protocolo em cartório</option>
-                <option>Gestão de prazos</option>
-                <option>Correspondente jurídico</option>
-                <option>Plano mensal completo</option>
+                <option value="Entrega de documentos">Entrega de documentos</option>
+                <option value="Protocolo em cartório">Protocolo em cartório</option>
+                <option value="Diligência externa">Diligência externa</option>
+                <option value="Correspondente jurídico">Correspondente jurídico</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Mensagem (opcional)</label>
-              <textarea placeholder="Conte um pouco sobre sua necessidade..."></textarea>
+              <label>Endereço de origem *</label>
+              <input type="text" id="originAddr" placeholder="Rua, número, bairro" required>
             </div>
-            <button type="submit" class="form-submit">Solicitar demonstração gratuita</button>
+            <div class="form-group">
+              <label>Endereço de destino *</label>
+              <input type="text" id="destAddr" placeholder="Rua, número, bairro" required>
+            </div>
+            <div class="form-group">
+              <label>Urgência</label>
+              <select id="urgency">
+                <option value="normal">Normal (2-4h)</option>
+                <option value="urgente">Urgente (+R$30, 1h)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Descrição (opcional)</label>
+              <textarea id="description" rows="2" placeholder="Detalhes adicionais..."></textarea>
+            </div>
+            <div id="pricePreview" style="background: var(--verde-light); padding: 0.75rem; border-radius: 12px; margin-bottom: 1rem; text-align: center;">
+              <span style="font-size: 0.8rem;">💰 Valor estimado: </span>
+              <span class="price" id="estimatedPrice">R$ 45,00</span>
+            </div>
+            <button type="submit" class="btn-primary">✅ Solicitar Pedido</button>
           </form>
-          <div class="form-success" id="formSuccess">
-            <p>✅ Recebemos seu contato! Em até 24h nossa equipe estará em toque com você.</p>
+        </div>
+      </div>
+
+      <!-- PROFILE SCREEN -->
+      <div id="profileScreen" class="screen">
+        <div class="card">
+          <h3>👤 Perfil</h3>
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="profileName" placeholder="Seu nome">
           </div>
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="profileEmail" placeholder="email">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp</label>
+            <input type="tel" id="profileWhatsapp" placeholder="(11) 99999-9999">
+          </div>
+          <button class="btn-primary" id="saveProfileBtn">Salvar alterações</button>
+        </div>
+        <div class="card">
+          <h3>💳 Formas de pagamento</h3>
+          <p style="font-size: 0.8rem; color: var(--muted);">Pix, cartão de crédito ou boleto. Os pedidos são pagos após a conclusão.</p>
         </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="logo">Juris<span>Log</span></div>
-  <p>Logística jurídica inteligente para advogados modernos.</p>
-  <div class="footer-links">
-    <a href="#como-funciona">Como funciona</a>
-    <a href="#servicos">Serviços</a>
-    <a href="#precos">Preços</a>
-    <a href="#planos">Planos</a>
-    <a href="#contato">Contato</a>
+  <!-- MODAL / BOTTOM SHEET -->
+  <div id="modalOverlay" class="modal-overlay" onclick="closeSheet()"></div>
+  <div id="bottomSheet" class="bottom-sheet">
+    <div class="sheet-header">
+      <strong>📍 Rastreamento</strong>
+      <button onclick="closeSheet()" style="background:none; border:none; font-size:1.2rem;">✕</button>
+    </div>
+    <div id="sheetContent"></div>
   </div>
-  <p style="margin-top:1.5rem; font-size:12px;">© 2025 JurisLog. Todos os direitos reservados.</p>
-</footer>
+
+  <div id="toast" class="toast"></div>
+</div>
 
 <script>
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  // ==================== DATA MODEL ====================
+  let currentUser = null;
+  let orders = [];
+  let nextOrderId = 100;
 
-  // Form submit
-  function submitForm(e) {
-    e.preventDefault();
-    document.getElementById('contactForm').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+  // Load from localStorage
+  function loadData() {
+    const savedUser = localStorage.getItem('jurislog_user');
+    const savedOrders = localStorage.getItem('jurislog_orders');
+    const savedNextId = localStorage.getItem('jurislog_nextId');
+    
+    if (savedUser) currentUser = JSON.parse(savedUser);
+    if (savedOrders) orders = JSON.parse(savedOrders);
+    if (savedNextId) nextOrderId = parseInt(savedNextId);
   }
 
-  // Mobile menu
-  function toggleMenu() {
-    const links = document.querySelector('.nav-links');
-    if (links.style.display === 'flex') {
-      links.style.display = 'none';
-    } else {
-      links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(247,245,240,0.98);padding:1.5rem 2rem;gap:1.25rem;border-bottom:1px solid #E2DDD4;backdrop-filter:blur(12px);z-index:99;';
+  function saveData() {
+    if (currentUser) localStorage.setItem('jurislog_user', JSON.stringify(currentUser));
+    localStorage.setItem('jurislog_orders', JSON.stringify(orders));
+    localStorage.setItem('jurislog_nextId', nextOrderId);
+  }
+
+  // Price calculator
+  function calculatePrice(serviceType, urgency) {
+    const basePrices = {
+      'Entrega de documentos': 35,
+      'Protocolo em cartório': 55,
+      'Diligência externa': 70,
+      'Correspondente jurídico': 180
+    };
+    let price = basePrices[serviceType] || 45;
+    if (urgency === 'urgente') price += 30;
+    return price;
+  }
+
+  // Generate random tracking updates
+  function generateTracking(orderId) {
+    const statuses = ['pending', 'collecting', 'transit', 'delivered'];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    const updates = [
+      { time: new Date(Date.now() - 3600000).toLocaleTimeString(), msg: 'Pedido recebido' },
+      { time: new Date(Date.now() - 1800000).toLocaleTimeString(), msg: 'Solicitante designado' },
+      { time: new Date(Date.now() - 600000).toLocaleTimeString(), msg: 'Em rota de coleta' }
+    ];
+    if (randomStatus === 'delivered') {
+      updates.push({ time: new Date().toLocaleTimeString(), msg: 'Entregue com sucesso! Comprovante anexado.' });
+    }
+    return { status: randomStatus, updates };
+  }
+
+  // Create new order
+  function createOrder(orderData) {
+    const id = nextOrderId++;
+    const tracking = generateTracking(id);
+    const newOrder = {
+      id,
+      ...orderData,
+      status: tracking.status,
+      trackingHistory: tracking.updates,
+      createdAt: new Date().toISOString(),
+      userId: currentUser.id
+    };
+    orders.unshift(newOrder);
+    saveData();
+    showToast('Pedido criado com sucesso! Acompanhe no rastreamento.');
+    renderAll();
+    switchToScreen('orders');
+    return newOrder;
+  }
+
+  // Update order status (simulate real-time update)
+  function updateOrderStatus(orderId) {
+    const order = orders.find(o => o.id === orderId);
+    if (order && order.status !== 'delivered' && order.status !== 'cancelled') {
+      const statusFlow = { pending: 'collecting', collecting: 'transit', transit: 'delivered' };
+      const newStatus = statusFlow[order.status];
+      if (newStatus) {
+        order.status = newStatus;
+        order.trackingHistory.push({
+          time: new Date().toLocaleTimeString(),
+          msg: newStatus === 'collecting' ? 'Solicitante a caminho para coleta' :
+                newStatus === 'transit' ? 'Documento em trânsito' :
+                'Entregue e protocolado com sucesso'
+        });
+        saveData();
+        renderAll();
+        showToast(`Pedido #${order.id} atualizado: ${getStatusText(newStatus)}`);
+      }
     }
   }
 
-  // Contact layout responsive
-  function checkLayout() {
-    const layout = document.querySelector('.contact-layout');
-    if (layout) layout.style.gridTemplateColumns = window.innerWidth < 768 ? '1fr' : '1fr 1fr';
+  function getStatusText(status) {
+    const map = { pending: 'Pendente', collecting: 'Em coleta', transit: 'Em trânsito', delivered: 'Entregue', cancelled: 'Cancelado' };
+    return map[status] || status;
   }
-  window.addEventListener('resize', checkLayout);
-  checkLayout();
+
+  // Auto-simulate updates every 30 seconds for demo
+  let simulationInterval;
+  function startSimulation() {
+    if (simulationInterval) clearInterval(simulationInterval);
+    simulationInterval = setInterval(() => {
+      const activeOrders = orders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled');
+      activeOrders.forEach(order => updateOrderStatus(order.id));
+    }, 30000);
+  }
+
+  // ==================== RENDER FUNCTIONS ====================
+  function renderAll() {
+    if (!currentUser) return;
+    renderHome();
+    renderOrdersList();
+    renderStats();
+    updateProfileForm();
+  }
+
+  function renderHome() {
+    const activeOrders = orders.filter(o => o.userId === currentUser.id && o.status !== 'delivered' && o.status !== 'cancelled');
+    const container = document.getElementById('activeOrdersList');
+    if (activeOrders.length === 0) {
+      container.innerHTML = '<p style="font-size:0.8rem; color:var(--muted);">Nenhum pedido ativo</p>';
+    } else {
+      container.innerHTML = activeOrders.slice(0, 3).map(order => `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem; padding:0.5rem; background:var(--off); border-radius:12px;">
+          <div><strong>#${order.id}</strong><br><span style="font-size:0.7rem;">${order.serviceType}</span></div>
+          <div><span class="order-status status-${order.status}">${getStatusText(order.status)}</span></div>
+          <button onclick="viewTracking(${order.id})" style="background:none; border:1px solid var(--verde); border-radius:20px; padding:4px 12px; font-size:0.7rem;">Rastrear</button>
+        </div>
+      `).join('');
+    }
+    document.getElementById('welcomeName').innerText = currentUser.name.split(' ')[0];
+  }
+
+  function renderOrdersList() {
+    const userOrders = orders.filter(o => o.userId === currentUser.id);
+    const container = document.getElementById('ordersList');
+    const emptyDiv = document.getElementById('emptyOrders');
+    
+    if (userOrders.length === 0) {
+      container.innerHTML = '';
+      emptyDiv.style.display = 'block';
+    } else {
+      emptyDiv.style.display = 'none';
+      container.innerHTML = userOrders.map(order => `
+        <div class="card">
+          <div class="card-header">
+            <span class="order-id">Pedido #${order.id}</span>
+            <span class="order-status status-${order.status}">${getStatusText(order.status)}</span>
+          </div>
+          <div><strong>${order.serviceType}</strong></div>
+          <div class="order-details">
+            📍 De: ${order.origin}<br>
+            📍 Para: ${order.destination}<br>
+            💰 ${order.price}
+          </div>
+          <div class="tracking-info">
+            📍 Última atualização: ${order.trackingHistory.length > 0 ? order.trackingHistory[order.trackingHistory.length-1].msg : 'Aguardando'}<br>
+            ⏱️ ${new Date(order.createdAt).toLocaleString()}
+          </div>
+          <button onclick="viewTracking(${order.id})" style="margin-top:0.5rem; background:var(--verde-light); border:none; border-radius:20px; padding:6px; width:100%; cursor:pointer;">🔍 Ver rastreamento completo</button>
+        </div>
+      `).join('');
+    }
+  }
+
+  function renderStats() {
+    const userOrders = orders.filter(o => o.userId === currentUser.id);
+    const total = userOrders.length;
+    const delivered = userOrders.filter(o => o.status === 'delivered').length;
+    const pending = userOrders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled').length;
+    const totalSpent = userOrders.reduce((sum, o) => {
+      const priceNum = parseFloat(o.price.replace('R$', '').replace(',', '.')) || 0;
+      return sum + priceNum;
+    }, 0);
+    
+    document.getElementById('statsContainer').innerHTML = `
+      <div style="display: flex; gap: 1rem; justify-content: space-around;">
+        <div><strong>${total}</strong><br><span style="font-size:0.7rem;">Total</span></div>
+        <div><strong>${delivered}</strong><br><span style="font-size:0.7rem;">Entregues</span></div>
+        <div><strong>${pending}</strong><br><span style="font-size:0.7rem;">Em andamento</span></div>
+        <div><strong>R$ ${totalSpent.toFixed(2)}</strong><br><span style="font-size:0.7rem;">Gasto</span></div>
+      </div>
+    `;
+  }
+
+  function updateProfileForm() {
+    document.getElementById('profileName').value = currentUser.name || '';
+    document.getElementById('profileEmail').value = currentUser.email || '';
+    document.getElementById('profileWhatsapp').value = currentUser.whatsapp || '';
+  }
+
+  // ==================== TRACKING SHEET ====================
+  window.viewTracking = function(orderId) {
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+    
+    const sheet = document.getElementById('bottomSheet');
+    const overlay = document.getElementById('modalOverlay');
+    const sheetContent = document.getElementById('sheetContent');
+    
+    let statusIcon = '⏳';
+    if (order.status === 'collecting') statusIcon = '🛵';
+    if (order.status === 'transit') statusIcon = '🚚';
+    if (order.status === 'delivered') statusIcon = '✅';
+    
+    sheetContent.innerHTML = `
+      <div style="margin-bottom: 1rem;">
+        <strong>Pedido #${order.id}</strong><br>
+        <span class="order-status status-${order.status}">${getStatusText(order.status)}</span>
+      </div>
+      <div style="background: var(--off); padding: 0.75rem; border-radius: 12px; margin-bottom: 1rem;">
+        <div><strong>${order.serviceType}</strong></div>
+        <div style="font-size:0.75rem;">${order.origin} → ${order.destination}</div>
+        <div style="font-size:0.75rem;">💰 ${order.price}</div>
+      </div>
+      <div><strong>📍 Histórico de rastreamento</strong></div>
+      <div style="margin-top: 0.5rem;">
+        ${order.trackingHistory.map(update => `
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; font-size:0.75rem;">
+            <span style="color:var(--verde);">●</span>
+            <span><strong>${update.time}</strong> - ${update.msg}</span>
+          </div>
+        `).join('')}
+      </div>
+      ${order.status === 'delivered' ? '<div style="margin-top:1rem; padding:0.5rem; background:var(--verde-light); border-radius:12px; text-align:center;">📎 Comprovante: protocolo_anexado.pdf (simulado)</div>' : ''}
+      <button onclick="updateOrderStatus(${order.id})" class="btn-outline" style="margin-top:1rem;">🔄 Simular atualização</button>
+    `;
+    
+    overlay.style.display = 'block';
+    sheet.classList.add('open');
+  };
+  
+  window.closeSheet = function() {
+    document.getElementById('modalOverlay').style.display = 'none';
+    document.getElementById('bottomSheet').classList.remove('open');
+  };
+  
+  window.updateOrderStatus = function(orderId) {
+    updateOrderStatus(orderId);
+    closeSheet();
+  };
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
+  }
+
+  // ==================== SCREEN NAVIGATION ====================
+  function switchToScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(`${screenId}Screen`).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    const activeTab = Array.from(document.querySelectorAll('.tab')).find(t => t.dataset.screen === screenId);
+    if (activeTab) activeTab.classList.add('active');
+    renderAll();
+  }
+  window.switchToScreen = switchToScreen;
+
+  // Tab listeners
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchToScreen(tab.dataset.screen);
+    });
+  });
+
+  // ==================== AUTH ====================
+  function login(email, password) {
+    // Simple demo auth
+    if (email && password) {
+      currentUser = {
+        id: 1,
+        name: 'Dr. André Silva',
+        email: email,
+        whatsapp: '(11) 98765-4321'
+      };
+      saveData();
+      document.getElementById('authScreen').style.display = 'none';
+      document.getElementById('appScreen').style.display = 'block';
+      renderAll();
+      startSimulation();
+      showToast('Login realizado com sucesso!');
+    }
+  }
+
+  function logout() {
+    currentUser = null;
+    if (simulationInterval) clearInterval(simulationInterval);
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('appScreen').style.display = 'none';
+    localStorage.removeItem('jurislog_user');
+    showToast('Desconectado');
+  }
+
+  // ==================== FORM HANDLERS ====================
+  document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    login(email, password);
+  });
+
+  document.getElementById('logoutBtn')?.addEventListener('click', logout);
+
+  document.getElementById('newOrderForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const serviceType = document.getElementById('orderType').value;
+    if (!serviceType) {
+      showToast('Selecione o tipo de serviço');
+      return;
+    }
+    const origin = document.getElementById('originAddr').value;
+    const destination = document.getElementById('destAddr').value;
+    if (!origin || !destination) {
+      showToast('Preencha os endereços');
+      return;
+    }
+    const urgency = document.getElementById('urgency').value;
+    const description = document.getElementById('description').value;
+    const price = calculatePrice(serviceType, urgency);
+    
+    createOrder({
+      serviceType,
+      origin,
+      destination,
+      urgency,
+      description,
+      price: `R$ ${price.toFixed(2).replace('.', ',')}`,
+      priceValue: price
+    });
+    
+    e.target.reset();
+    document.getElementById('originAddr').value = '';
+    document.getElementById('destAddr').value = '';
+  });
+
+  // Price preview
+  const typeSelect = document.getElementById('orderType');
+  const urgencySelect = document.getElementById('urgency');
+  function updatePricePreview() {
+    const type = typeSelect?.value;
+    const urgency = urgencySelect?.value;
+    if (type) {
+      const price = calculatePrice(type, urgency);
+      document.getElementById('estimatedPrice').innerText = `R$ ${price.toFixed(2).replace('.', ',')}`;
+    }
+  }
+  typeSelect?.addEventListener('change', updatePricePreview);
+  urgencySelect?.addEventListener('change', updatePricePreview);
+
+  // Save profile
+  document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
+    if (currentUser) {
+      currentUser.name = document.getElementById('profileName').value;
+      currentUser.email = document.getElementById('profileEmail').value;
+      currentUser.whatsapp = document.getElementById('profileWhatsapp').value;
+      saveData();
+      renderAll();
+      showToast('Perfil atualizado!');
+    }
+  });
+
+  // Avatar click
+  document.getElementById('avatarBtn')?.addEventListener('click', () => {
+    switchToScreen('profile');
+  });
+
+  // Initial load
+  loadData();
+  if (currentUser) {
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'block';
+    renderAll();
+    startSimulation();
+  } else {
+    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('appScreen').style.display = 'none';
+  }
 </script>
 </body>
 </html>
